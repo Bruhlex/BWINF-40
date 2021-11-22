@@ -130,7 +130,7 @@ class Aufgabe:
             self._loesen(strecke, loesungsStrecke)
             loesungsStrecke.pop()
 
-    def read_input(self, file):
+    def _readInput(self, file):
         f = open("Aufgabe 2/assets/" + file, "r")
         content = f.read()
         f.close()
@@ -147,7 +147,7 @@ class Aufgabe:
                 self.HOTELS.append([ int(strecke), float(bewertung) ])
         
     def main(self, file):
-        self.read_input(file)
+        self._readInput(file)
 
         loesungsStrecke = []
         self._loesen( [0, 0], loesungsStrecke)
@@ -155,4 +155,4 @@ class Aufgabe:
 
 
 test = Aufgabe()
-test.main("hotels5.txt")
+test.main("hotels6.txt")

@@ -21,7 +21,7 @@ class Aufgabe:
         }
 
         self.SPIELER_STATUS["schwarz"]["WUERFEL"] = self.WUERFEL[0]
-        self.SPIELER_STATUS["gruen"]["WUERFEL"] = self.WUERFEL[5]
+        self.SPIELER_STATUS["gruen"]["WUERFEL"] = self.WUERFEL[4]
 
     def _getErgebnis(self, wuerfel):
         return random.choice(wuerfel)
@@ -75,9 +75,21 @@ class Aufgabe:
                     indexOfSpieler = self._getIndex(spielerStats["POSITIONEN"], positionen[i])
                     spielerStats["POSITIONEN"][indexOfSpieler] += wuerfelWert
 
+                    """
+
+                        Check ob sich ein Gegenspieler auf dem Feld befindet das man betreten will.
+                        Falls ja, wird der Gegenspieler zurück auf das B-Feld gestoßten und man selbst
+                        schreitet auf das Feld hinauf
+                        
+                    """
                     positionGegenspieler = spielerStats["POSITIONEN"][indexOfSpieler] + 20
+                    positionGegenspieler2 = spielerStats["POSITIONEN"][indexOfSpieler] - 20
                     if positionGegenspieler in gegenSpielerStats["POSITIONEN"]:
                         gegenSpielerStats["POSITIONEN"][self._getIndex(gegenSpielerStats["POSITIONEN"], positionGegenspieler)] = 0
+                        gegenSpielerStats["B-FELD"] += 1
+
+                    if positionGegenspieler2 in gegenSpielerStats["POSITIONEN"]:
+                        gegenSpielerStats["POSITIONEN"][self._getIndex(gegenSpielerStats["POSITIONEN"], positionGegenspieler2)] = 0
                         gegenSpielerStats["B-FELD"] += 1
 
                     break
@@ -117,4 +129,4 @@ class Aufgabe:
 
 
 test = Aufgabe()
-test.main("wuerfel0.txt")
+test.main("wuerfel2.txt")
