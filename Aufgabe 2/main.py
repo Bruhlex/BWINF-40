@@ -1,12 +1,12 @@
 class Aufgabe:
     def __init__(self):
         self.HOTELS = []
-        self.bewertung_minimum = 0
-        self.maximale_laenge = 360
+        self.bewertungMinimum = 0
+        self.maximaleLaenge = 360
         self.strecke = 1510
 
-    def _get_moegliche_strecken(self, letztes_verwendetes_hotel):
-        moegliche_strecken = [] 
+    def _getMoeglicheStrecken(self, letztesVerwendetesHotel):
+        moeglicheStrecken = [] 
 
         """
 
@@ -28,13 +28,13 @@ class Aufgabe:
         """
 
         for hotel in self.HOTELS:
-            if hotel[0] - letztes_verwendetes_hotel[0] <= self.maximale_laenge and \
-               hotel[0] - letztes_verwendetes_hotel[0] > 0:
-                moegliche_strecken.append(hotel)
+            if hotel[0] - letztesVerwendetesHotel[0] <= self.maximaleLaenge and \
+               hotel[0] - letztesVerwendetesHotel[0] > 0:
+                moeglicheStrecken.append(hotel)
 
-        return moegliche_strecken
+        return moeglicheStrecken
 
-    def _get_schlechteste_bewertung(self, strecke):
+    def _getSchlechtesteBewertung(self, strecke):
         """
 
             6 als Wert der nicht durch Bewertungen erreicht werden kann. 
@@ -43,23 +43,23 @@ class Aufgabe:
 
         """
 
-        schlechteste_bewertung = 6
+        schlechtesteBewertung = 6
 
         for hotel in strecke:
-            if hotel[1] < schlechteste_bewertung:
-                schlechteste_bewertung = hotel[1]
+            if hotel[1] < schlechtesteBewertung:
+                schlechtesteBewertung = hotel[1]
         
-        return schlechteste_bewertung
+        return schlechtesteBewertung
 
     # def _sortiere_nach_bester():
 
-    def _am_ende(self, letztes_verwendetes_hotel):
-        if (self.strecke - letztes_verwendetes_hotel[0]) <= self.maximale_laenge:
+    def _amEnde(self, letztesVerwendetesHotel):
+        if (self.strecke - letztesVerwendetesHotel[0]) <= self.maximaleLaenge:
             return True
         
         return False
 
-    def _loesen(self, letztes_verwendetes_hotel, loesungs_strecke):
+    def _loesen(self, letztesVerwendetesHotel, loesungsStrecke):
         """
 
             Optimierung: Falls eine Strecke über 4 Hotels enthält, kann 
@@ -71,41 +71,41 @@ class Aufgabe:
 
         """
 
-        if len(loesungs_strecke) > 4 or ( len(loesungs_strecke) != 0 and \
-            self.strecke - loesungs_strecke[-1][0] > (5 - len(loesungs_strecke)) * self.maximale_laenge):
+        if len(loesungsStrecke) > 4 or ( len(loesungsStrecke) != 0 and \
+            self.strecke - loesungsStrecke[-1][0] > (5 - len(loesungsStrecke)) * self.maximaleLaenge):
             return
 
         """
         
-            Die Methode _get_moegliche_strecken gibt alle Strecken zurück
+            Die Methode _getMoeglicheStrecken gibt alle Strecken zurück
             die ab dem letzten verwendeten Hotels möglich sind, innerhalb 
             der 6 Stunden Grenze
 
         """
 
-        moegliche_strecken = self._get_moegliche_strecken(letztes_verwendetes_hotel)
+        moeglicheStrecken = self._getMoeglicheStrecken(letztesVerwendetesHotel)
 
         """
 
             Falls eine komplette Strecke gefunden wurde, 
             vergleiche die schlechteste Bewertung dieser mit der
-            bewertung_minimum Variable und ersetze diese, falls die 
+            bewertungMinimum Variable und ersetze diese, falls die 
             schlechteste Bewertung besser ist
 
         """
 
-        if len(moegliche_strecken) == 0 or self._am_ende(letztes_verwendetes_hotel):
-            schlechteste_bewertung = self._get_schlechteste_bewertung(loesungs_strecke)
+        if len(moeglicheStrecken) == 0 or self._amEnde(letztesVerwendetesHotel):
+            schlechtesteBewertung = self._getSchlechtesteBewertung(loesungsStrecke)
 
-            if self.bewertung_minimum < schlechteste_bewertung:
-                self.bewertung_minimum = schlechteste_bewertung
-                print(loesungs_strecke, self.bewertung_minimum)
+            if self.bewertungMinimum < schlechtesteBewertung:
+                self.bewertungMinimum = schlechtesteBewertung
+                print(loesungsStrecke, self.bewertungMinimum)
 
             return
 
         # Für optimierung: sorten nach bester bewertung
 
-        for strecke in moegliche_strecken:
+        for strecke in moeglicheStrecken:
 
             """
 
@@ -115,7 +115,7 @@ class Aufgabe:
                 übersprungen
 
             """
-            if strecke[1] < self.bewertung_minimum:
+            if strecke[1] < self.bewertungMinimum:
                 continue
             
             """
@@ -126,9 +126,9 @@ class Aufgabe:
                 werden kann.
 
             """
-            loesungs_strecke.append(strecke)
-            self._loesen(strecke, loesungs_strecke)
-            loesungs_strecke.pop()
+            loesungsStrecke.append(strecke)
+            self._loesen(strecke, loesungsStrecke)
+            loesungsStrecke.pop()
 
     def read_input(self, file):
         f = open("Aufgabe 2/assets/" + file, "r")
@@ -149,8 +149,8 @@ class Aufgabe:
     def main(self, file):
         self.read_input(file)
 
-        loesungs_strecke = []
-        self._loesen( [0, 0], loesungs_strecke)
+        loesungsStrecke = []
+        self._loesen( [0, 0], loesungsStrecke)
 
 
 
