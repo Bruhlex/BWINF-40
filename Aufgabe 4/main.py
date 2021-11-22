@@ -1,30 +1,8 @@
 import random
-
-WUERFEL = [
-    [ 6, 1, 2, 3, 4, 5, 6 ],
-    [ 6, 1, 1, 1, 6, 6, 6 ],
-    [ 4, 1, 2, 3, 4 ],
-    [ 10, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
-    [ 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ],
-    [ 20, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ],
-]
-
 class Aufgabe:
     def __init__(self):
-        self.SPIELER_STATUS = {
-            "schwarz":  {
-                "B-FELD"        : 4,
-                "WUERFEL"       : [],
-                "POSITIONEN"    : [0] * 4,
-                "LAST_POSITION" : 44
-            },
-            "gruen":    {
-                "B-FELD"        : 4,
-                "WUERFEL"       : [],
-                "POSITIONEN"    : [0] * 4,
-                "LAST_POSITION" : 44
-            }
-        }
+        self.WUERFEL = []
+        self.SPIELER_STATUS = {}
 
     def _setSpieler(self):
         self.SPIELER_STATUS = {
@@ -42,8 +20,8 @@ class Aufgabe:
             }
         }
 
-        self.SPIELER_STATUS["schwarz"]["WUERFEL"] = WUERFEL[0]
-        self.SPIELER_STATUS["gruen"]["WUERFEL"] = WUERFEL[5]
+        self.SPIELER_STATUS["schwarz"]["WUERFEL"] = self.WUERFEL[0]
+        self.SPIELER_STATUS["gruen"]["WUERFEL"] = self.WUERFEL[5]
 
     def _getErgebnis(self, wuerfel):
         return random.choice(wuerfel)
@@ -74,7 +52,8 @@ class Aufgabe:
                 die Position 1
 
             """
-            print("Loop hier", spielerStats["B-FELD"], wuerfelWert, spielerStats["LAST_POSITION"], amZug, spielerStats["B-FELD"], spielerStats["POSITIONEN"])
+            print(spielerStats["B-FELD"], wuerfelWert, spielerStats["LAST_POSITION"], amZug, spielerStats["B-FELD"], spielerStats["POSITIONEN"])
+
             if wuerfelWert == 6 and 0 in spielerStats["POSITIONEN"]:
                 if 1 not in spielerStats["POSITIONEN"]:
                     spielerStats["B-FELD"] -= 1
@@ -88,7 +67,9 @@ class Aufgabe:
                 positionen = sorted(spielerStats["POSITIONEN"][:], reverse=True)
 
                 for i in range(len(positionen)):
-                    if positionen[i] == 0 or positionen[i] == -1 or wuerfelWert > spielerStats["LAST_POSITION"] - positionen[i] or positionen[i] + wuerfelWert in spielerStats["POSITIONEN"]:
+                    if  positionen[i] == 0 or positionen[i] == -1 or \
+                        wuerfelWert > spielerStats["LAST_POSITION"] - positionen[i] or \
+                        positionen[i] + wuerfelWert in spielerStats["POSITIONEN"]:
                         continue
 
                     indexOfSpieler = self._getIndex(spielerStats["POSITIONEN"], positionen[i])
@@ -113,10 +94,8 @@ class Aufgabe:
 
             amZug = naechsterZug
 
-        return gewinner
-
     def read_input(self, file):
-        f = open("Aufgabe 2/assets/" + file, "r")
+        f = open("Aufgabe 4/assets/" + file, "r")
         content = f.read()
         f.close()
 
@@ -125,20 +104,17 @@ class Aufgabe:
         for i in range(0, len(data)):
             if(i == 0):
                 continue
-            elif(i == 1):
-                self.strecke = int(data[1])
             else:
-                [ strecke, bewertung ] = data[i].split(" ")
-                self.HOTELS.append([ int(strecke), float(bewertung) ])
+                wuerfel = data[i].split(" ")
+                if len(wuerfel) != 0:
+                    self.WUERFEL.append(list(map(int, data[i].split(" "))))
         
     def main(self, file):
-        #self.read_input(file)
-
-        #loesungs_strecke = []
+        self.read_input(file)
         self._setSpieler()
         print(self._simulierSpiel("schwarz"))
 
 
 
 test = Aufgabe()
-test.main("hotels5.txt")
+test.main("wuerfel0.txt")
