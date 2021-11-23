@@ -4,6 +4,7 @@ class Aufgabe:
         self.bewertungMinimum = 0
         self.maximaleLaenge = 360
         self.strecke = 1510
+        self.loesung = []
 
     def _getMoeglicheStrecken(self, letztesVerwendetesHotel):
         moeglicheStrecken = [] 
@@ -99,8 +100,8 @@ class Aufgabe:
 
             if self.bewertungMinimum < schlechtesteBewertung:
                 self.bewertungMinimum = schlechtesteBewertung
-                print(loesungsStrecke, self.bewertungMinimum)
-
+                #print(loesungsStrecke, self.bewertungMinimum)
+                self.loesung = loesungsStrecke[:]
             return
 
         # Für optimierung: sorten nach bester bewertung
@@ -145,14 +146,26 @@ class Aufgabe:
             else:
                 [ strecke, bewertung ] = data[i].split(" ")
                 self.HOTELS.append([ int(strecke), float(bewertung) ])
-        
+
+    def _formatierLoesung(self, loesungsweg):
+        if self.strecke > loesungsweg[-1][0] + self.maximaleLaenge:
+            print("Das Ziel kann nicht erreicht werden, da die Distanz zwischen den Hotels zu groß ist.")
+            return
+
+        print("Die geeigneteste Strecke nach den Kriterien ist:")
+        for [ stop, hotel ] in loesungsweg:
+            print(f"- Stop bei {stop} für das Hotel mit der Bewertung {hotel}")
+
+
+        print(f"Die schlechteste Bewertung der Hotels ist {self._getSchlechtesteBewertung(loesungsweg)}")
+ 
+    
     def main(self, file):
         self._readInput(file)
-
-        loesungsStrecke = []
-        self._loesen( [0, 0], loesungsStrecke)
+        self._loesen( [0, 0], [] )
+        self._formatierLoesung(self.loesung)
 
 
 
 test = Aufgabe()
-test.main("hotels6.txt")
+test.main("hotels7.txt")
