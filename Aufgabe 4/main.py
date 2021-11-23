@@ -86,7 +86,7 @@ class Aufgabe:
                     indexOfSpieler = self._getIndex(spielerStats["POSITIONEN"], 1)
                     spielerStats["POSITIONEN"][indexOfSpieler] += wuerfelWert
                 
-                #self._checkGegenspieler(indexOfSpieler, amZug, naechsterZug)
+                self._checkGegenspieler(indexOfSpieler, amZug, naechsterZug)
             else:
                 positionen = sorted(spielerStats["POSITIONEN"][:], reverse=True)
 
